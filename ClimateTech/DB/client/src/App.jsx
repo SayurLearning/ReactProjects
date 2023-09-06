@@ -42,8 +42,8 @@ function App() {
       body: JSON.stringify(details)
     })
     const resp = await res.json()
-    setResourceData([...data, resp])
-    Console.log("Hello");
+    setResourceData([...resource_data, resp])
+    
   }
 
   return (

@@ -1,10 +1,21 @@
 import { useState } from "react";
 
+
 const Inserter = ({ adder,data }) => {
     const [location, setLocation] = useState("");
     const [component, setComponent] = useState("");
     const [componentType, setComponentType] = useState("");
-
+    let unique_location = [];
+    let unique_component = [];
+    let unique_component_type = [];
+    data.map((val)=>{unique_location.push(val.location),unique_component.push(val.component),unique_component_type.push(val.component_type)})
+    // console.log(arr);
+    unique_location=unique_location.filter((item,index) => unique_location.indexOf(item) === index);
+    unique_component=unique_component.filter((item,index) => unique_component.indexOf(item) === index);
+    unique_component_type=unique_component_type.filter((item,index) => unique_component_type.indexOf(item) === index);
+    // console.log(unique_location);
+    // console.log(unique_component);
+    // console.log(unique_component_type);
     const HandleSubmission = (e) => {
         e.preventDefault();
         console.log("Submitted");
@@ -38,7 +49,7 @@ const Inserter = ({ adder,data }) => {
                         required/>
                         <datalist id="location" >
 
-                        {data.map((loc)=>(<option value={loc.location} >{loc.location}</option>))}
+                        {unique_location.map((loc)=>(<option value={loc} >{loc}</option>))}
 
                         </datalist> 
 
@@ -57,7 +68,7 @@ const Inserter = ({ adder,data }) => {
                         required/>
                         <datalist id="component" >
 
-                        {data.map((comp)=>(<option value={comp.component}  >{comp.component}</option>))}
+                        {unique_component.map((comp)=>(<option value={comp}  >{comp}</option>))}
 
                         </datalist> 
                     </div>
@@ -91,7 +102,7 @@ const Inserter = ({ adder,data }) => {
                         required/>
                         <datalist id="componenttype" >
 
-                        {data.map((comp)=>(<option value={comp.component_type}  >{comp.component_type}</option>))}
+                        {unique_component_type.map((compt)=>(<option value={compt}  >{compt}</option>))}
 
                         </datalist> 
                     </div>
