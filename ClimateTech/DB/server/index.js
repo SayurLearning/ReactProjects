@@ -18,17 +18,17 @@ app.get("/", async (req,res)=>{
     }
 })
 
-// app.get("/methods/:id", async(req,res)=>{
-//     try {
-//         const { id }= req.params;
+app.get("/methods/:id", async(req,res)=>{
+    try {
+        const { id }= req.params;
         
-//         const qry = await pool.query(`SELECT main_data.id,main_data.location,main_data.component,main_data.component_type,resource_data.method,resource_data.link FROM main_data JOIN resource_data ON main_data.component_type = resource_data.component_type WHERE main_data.component_type LIKE '${id}%';`);
-//         res.json(qry.rows);
- 
-//     } catch (error) {
-//         console.log(err.message);
-//     }
-// })
+        const qry = await pool.query(`select id from resource_data `);
+        res.json(qry.rows);
+        // `SELECT main_data.id,main_data.location,main_data.component,main_data.component_type,resource_data.method,resource_data.link FROM main_data JOIN resource_data ON main_data.component_type = resource_data.component_type WHERE main_data.component_type LIKE '${id}%';`
+    } catch (error) {
+        console.log(err.message);
+    }
+})
 
 // // app.get("/methods/:id/:val", async(req,res)=>{
 // //     try {
@@ -48,9 +48,11 @@ app.post("/methodsmain", async(req,res)=>{ //insert
         // const location=req.body.location;
         // const component=req.body.component;
         // const componenttype=req.body.component_type;
-        console.log(componentType+" "+component);
-        const qry = await pool.query(`INSERT INTO main_data(location,component,component_type) values($1,$2,$3)`,
+        
+        // const qry1= await pool.query(`select id,method from resource_data where component_type=$1`,[componentType]);
+        const qry = await pool.query(`INSERT INTO main_data(location,component,component_type,rid) values($1,$2,$3,(select id from resource_data where component_type='${componentType}'))`,
         [location,component,componentType]);
+        // console.log(qry1.body);
         res.json(qry);
 
     } catch (error) {
