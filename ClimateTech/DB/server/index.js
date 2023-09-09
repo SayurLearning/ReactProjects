@@ -10,7 +10,7 @@ app.use(express.json());
 //Display todo
 app.get("/", async (req,res)=>{
     try{
-        const qry = await pool.query("SELECT * FROM main_data;");
+        const qry = await pool.query("SELECT resource_data.id,location,component,main_data.component_type,method,link FROM main_data JOIN resource_data on main_data.rid=resource_data.id;");
         res.json(qry.rows);
     }
     catch(err){
@@ -18,29 +18,27 @@ app.get("/", async (req,res)=>{
     }
 })
 
-app.get("/methods/:id", async(req,res)=>{
+app.get("/:loc/:com?/:comty?", async(req,res)=>{
     try {
-        const { id }= req.params;
-        
-        const qry = await pool.query(`select id from resource_data `);
+        const { loc,com,comty }= req.params;
+        const qry = await pool.query(`SELECT method,link FROM main_data JOIN resource_data ON main_data.rid = resource_data.id WHERE main_data.location LIKE '${loc}%' or main_data.location LIKE '${com}%' or main_data.location LIKE '${comty}%' or main_data.component LIKE '${com}%' or main_data.component LIKE '${loc}%' or main_data.component LIKE '${comty}%' or main_data.component_type LIKE '${comty}%' or main_data.component_type LIKE '${com}%' or main_data.component_type LIKE '${loc}%';`);
         res.json(qry.rows);
-        // `SELECT main_data.id,main_data.location,main_data.component,main_data.component_type,resource_data.method,resource_data.link FROM main_data JOIN resource_data ON main_data.component_type = resource_data.component_type WHERE main_data.component_type LIKE '${id}%';`
     } catch (error) {
         console.log(err.message);
     }
 })
 
-// // app.get("/methods/:id/:val", async(req,res)=>{
-// //     try {
-// //         const { id,val }= req.params;
+// app.get("/methods/:id/:val", async(req,res)=>{
+//     try {
+//         const { id,val }= req.params;
         
-// //         const qry = await pool.query(`SELECT * FROM main WHERE ${id}='${val}'`);
-// //         res.json(qry.rows);
+//         const qry = await pool.query(`SELECT * FROM main_data WHERE ${id}='${val}'`);
+//         res.json(qry.rows);
  
-// //     } catch (error) {
-// //         console.log(err.message);
-// //     }
-// // })
+//     } catch (error) {
+//         console.log(err.message);
+//     }
+// })
 
 app.post("/methodsmain", async(req,res)=>{ //insert
     try {
