@@ -44,6 +44,12 @@ function NavBar() {
                         >
                             Resource Table
                         </Link>
+                        <Link
+                            to="/update"
+                            className="text-indigo-300 hover:text-black transition duration-300"
+                        >
+                            Update Table
+                        </Link>
                     </div>
                 </div>
             </div>

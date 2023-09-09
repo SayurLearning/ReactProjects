@@ -4,6 +4,7 @@ import {BrowserRouter as Router, Route, Routes} from 'react-router-dom'
 import Inserter from './components/Inserter';
 import Resource from './components/Resource';
 import NavBar from './components/NavBar';
+import Grid from './components/Grid';
 
 function App() {
   const [main_data,setMainData] = useState([])
@@ -59,8 +60,9 @@ function App() {
 
           <Route path='/resource' element={<Resource data={resource_data} adder={addDetails_resource}/>}/>
           
+          <Route path='/update' element={<Grid data={main_data} />}/>
           </Routes>
-          </Router>
+    </Router>
     </>
   )
 }
